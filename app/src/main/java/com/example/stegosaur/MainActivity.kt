@@ -1,5 +1,7 @@
 package com.example.stegosaur
 
+import android.app.Notification
+import android.content.Intent
 import android.graphics.Bitmap
 import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +13,7 @@ import android.provider.MediaStore.Images.*
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import java.io.File
@@ -21,6 +24,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val gallery: Button = findViewById(R.id.gallery_view)
         gallery.setOnClickListener{ seeGallery() }
+
+        val genQR: Button = findViewById(R.id.qr_gen)
+        genQR.setOnClickListener{
+            val intent = Intent(this, QRGen::class.java)
+            startActivity(intent)
+        }
+
+        val save: Button = findViewById(R.id.save_file)
+        save.setOnClickListener{ saveFile() }
 //
 //        val selectImage: Button = findViewById(R.id.select_label)
 //        saveButton.setOnClickListener{ selectImage() }
@@ -28,8 +40,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun seeGallery(){
-        setContentView(R.layout.gallery)
+        Toast.makeText(this, "Implement Gallery Read", Toast.LENGTH_SHORT).show()
     }
+
 
 //    private fun selectImage(){
 //
@@ -56,10 +69,7 @@ class MainActivity : AppCompatActivity() {
 //    }
 
     private fun saveFile() {
-        //Toast.makeText(this, "button clicked", Toast.LENGTH_SHORT).show()
-        val randomInt = (1..6).random()
-        val resultText: TextView = findViewById(R.id.result_text)
-        resultText.text = randomInt.toString()
+        Toast.makeText(this, "Implement File Write", Toast.LENGTH_SHORT).show()
     }
 }
 

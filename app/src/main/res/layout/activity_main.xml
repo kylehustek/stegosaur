@@ -27,6 +27,14 @@
         android:text="@string/see_gallery" />
 
     <Button
+        android:id="@+id/qr_gen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/generate_a_qr" />
+
+    <Button
         android:id="@+id/save_file"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
