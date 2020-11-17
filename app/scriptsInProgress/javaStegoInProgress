@@ -1,0 +1,162 @@
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.MemoryImageSource;
+import java.awt.image.PixelGrabber;
+import java.io.*;
+import javax.imageio.ImageIO;
+
+class Stego {
+    public static void main(String[] args) {
+        // Initialize variables
+        BufferedImage ogImg = null;
+        // DUMMY
+        BufferedImage qrCode = null;
+        BufferedImage stegoImg = null;
+        // Try to read image from file path given
+        try {
+            ogImg = ImageIO.read(new File(args[0]));
+            // TODO: Generate a qr code
+            // DUMMY
+            qrCode = ImageIO.read(new File(args[1]));
+        } catch (IOException e) {
+            System.err.println("Error opening image.");
+        }
+        // Conversion Process
+        // Only converts image to array and back again
+        // TODO: Write encode and decode
+        try {
+            stegoImg = encode(ogImg, qrCode);
+            // Decode
+        } catch (Exception e) {
+            System.err.println("Error merging images.");
+        }
+    }
+
+    public static BufferedImage encode(BufferedImage ogImg, BufferedImage qrCode) {
+        int[] ogPixels = new int[ogImg.getWidth() * ogImg.getHeight()];
+        PixelGrabber ogChewer = new PixelGrabber(ogImg, 0, 0, ogImg.getWidth(), ogImg.getHeight(), ogPixels, 0, ogImg.getWidth());
+        int[] qrPixels = new int[qrCode.getWidth() * qrCode.getHeight()];
+        PixelGrabber qrChewer = new PixelGrabber(qrCode, 0, 0, qrCode.getWidth(), qrCode.getHeight(), qrPixels, 0, qrCode.getWidth());
+        int[] stegoPixels = new int[ogImg.getWidth() * ogImg.getHeight()];
+        BufferedImage stegoImg = null;
+        try {
+            ogChewer.grabPixels();
+            qrChewer.grabPixels();
+        } catch (Exception e) {
+            System.err.println("Error in imageToIntArray.");
+        }
+        // Using pixel data and image dimensions, write the qr code information into the red channel of image
+        for (int j = 0; j < ogImg.getHeight(); j++) {
+            for (int i = 0; i < ogImg.getWidth(); i++) {
+                if ((j < qrCode.getHeight()) && (i < qrCode.getWidth())) {
+                    stegoPixels[i * j] = encodeSinglePixel(i, j, ogPixels[j * ogImg.getWidth() + i], qrPixels[j * qrCode.getWidth() + i]);
+                } else {
+                    stegoPixels[i * j] = ogPixels[j * ogImg.getWidth() + i];
+                }
+            }
+        }
+        return stegoImg;
+    }
+
+    public static int encodeSinglePixel(int x, int y, int ogPixel, int qrPixel) {
+        int pixel = 0;
+        //int alpha = (pixel >> 24) & 0xff;
+
+
+
+
+        // Pretty sure this converts the color channel to byte code
+        // Pull the pixel from the qr code
+        // Check if it's black or white
+        // Increment if it is, decrement if it isn't?
+        // ???
+        // Profit
+        int ogRed   = (ogPixel >> 16) & 0xff;
+        int qrRed = (ogPixel >> 16) & 0xff;
+
+
+
+        System.out.println(ogRed);
+        System.out.println(qrRed);
+
+
+
+        //int green = (pixel >>  8) & 0xff;
+        //int blue  = (pixel      ) & 0xff;
+        // Deal with the pixel as necessary...
+        return pixel;
+    }
+
+    /***
+     * Convert array of pixels into a BufferedImage
+     *
+     * @param ogPixels
+     * @param width
+     * @param height
+     */
+    public static void arrayToImage(int[] ogPixels, int width, int height) {
+
+        MemoryImageSource imgSrc = new MemoryImageSource(width, height, ogPixels, 0, width);
+        Image imgRaw = Toolkit.getDefaultToolkit().createImage(imgSrc);
+        BufferedImage newImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        newImg.getGraphics().drawImage(imgRaw, 0, 0, null);
+        try {
+            ImageIO.write(newImg, "jpg", new File("stegoImg.jpg"));
+        } catch (IOException e) {
+            System.err.println("Error in arrayToImage.");
+        }
+    }
+
+    // public static byte[] intArrayToByteArray(int[] intArray) {
+    //     byte[] byteArray = new byte[intArray.length * 3];
+    //     for (int i = 0; i < intArray.length; i++) {
+    //         byteArray[i * 3] = (byte) ((intArray[i] >> 16) & 0xFF);
+    //         byteArray[(i * 3) + 1] = (byte) ((intArray[i] >> 8) & 0xFF);
+    //         byteArray[(i * 3) + 2] = (byte) ((intArray[i]) & 0xFF);
+    //     }
+    //     return byteArray;
+    // }
+}
+
+
+
+
+// class Stego {
+
+//     public static void main(String[] args) {
+//         try {
+//             BufferedImage ogImg = ImageIO.read(new File(args[0]));
+//         } catch (IOException e) {
+//             System.out.println(e);
+//             System.out.println("Error in opening image in main");
+//         }
+//     }
+
+//     public static byte[] imageToByteArray(BufferedImage img) {
+//         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//         try {
+//             ImageIO.write(img, "jpg", baos);
+//             byte[] ogImgPix = baos.toByteArray();
+//             baos.close();
+//             return ogImgPix;
+//         } catch (IOException e) {
+//             System.out.println(e);
+//             System.out.println("Error in imageToByteArray");
+//         }
+//         return new byte[0];
+//     }
+
+//     public static BufferedImage byteArrayToImage(byte[] img) {
+//         try {
+//             ByteArrayInputStream bais = new ByteArrayInputStream(img);
+//             BufferedImage newImg = ImageIO.read(bais);
+//             ImageIO.write(newImg, "jpg", new File("new_" +  ".jpg"));
+//             bais.close();
+//             return newImg;
+//         } catch (IOException e) {
+//             System.out.println(e);
+//             System.out.println("Exception writing byte array to BufferedImage in byteArrayToImage");
+//         }
+//         return null;
+//     }
+// }
