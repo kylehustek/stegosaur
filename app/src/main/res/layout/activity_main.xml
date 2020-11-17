@@ -19,7 +19,7 @@
         android:text="@string/welcome" />
 
     <Button
-        android:id="@+id/gallery_view"
+        android:id="@+id/to_gallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
