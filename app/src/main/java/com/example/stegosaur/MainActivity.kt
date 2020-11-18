@@ -23,9 +23,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val gallery: Button = findViewById(R.id.to_gallery)
-        gallery.setOnClickListener{
-            val intent = Intent(this, Gallery::class.java)
+        val beginEncode: Button = findViewById(R.id.to_hide_image)
+        beginEncode.setOnClickListener{
+            val intent = Intent(this, EncodeImage::class.java)
             startActivity(intent)
         }
 
