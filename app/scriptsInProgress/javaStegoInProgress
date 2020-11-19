@@ -48,9 +48,9 @@ class Stego {
         for (int j = 0; j < ogImg.getHeight(); j++) {
             for (int i = 0; i < ogImg.getWidth(); i++) {
                 if ((j < qrCode.getHeight()) && (i < qrCode.getWidth())) {
-                    stegoPixels[i * j] = encodeSinglePixel(i, j, ogPixels[j * ogImg.getWidth() + i], qrPixels[j * qrCode.getWidth() + i]);
+                    stegoPixels[i * j] = encodeSinglePixel(ogPixels[i * j], qrPixels[i * j]);
                 } else {
-                    stegoPixels[i * j] = ogPixels[j * ogImg.getWidth() + i];
+                    stegoPixels[i * j] = ogPixels[i * j];
                 }
             }
         }
@@ -58,53 +58,50 @@ class Stego {
         return stegoImg;
     }
 
-    public static int encodeSinglePixel(int x, int y, int ogPixel, int qrPixel) {
-        String newRedPixBits = null;
-        // Convert the integer value to bits
+    public static int encodeSinglePixel(int ogPixel, int qrPixel) {
+        // Split pixel into separate channels
         int ogAlpha = (ogPixel >> 24) & 0xff;
         int ogRed   = (ogPixel >> 16) & 0xff;
         int ogGreen = (ogPixel >> 8) & 0xff;
-        int ogBlue = (ogPixel >> 0) & 0xff;
+        int ogBlue = (ogPixel) & 0xff;
         int qrRed = (qrPixel >> 16) & 0xff;
+        // Convert pixel int values to binary
         String ogRedBits = Integer.toBinaryString(ogRed);
+        String ogBlueBits = Integer.toBinaryString(ogBlue);
+        String ogGreenBits = Integer.toBinaryString(ogGreen);
         String qrRedBits = Integer.toBinaryString(qrRed);
         // Check if the qr pixel is black or white, otherwise throw error
-        // If black, add 1, if white, add 0
-        String decide = blackOrWhite(qrRedBits);
+        // Append a 1 or 0 to the new pixel, depending on the qr code pixel value
+        String newPixelRedBits = blackOrWhiteMerge(ogRedBits, qrRedBits);
+        String newPixelBlueBits = blackOrWhiteMerge(ogBlueBits, qrRedBits);
+        String newPixelGreenBits = blackOrWhiteMerge(ogGreenBits, qrRedBits);
+        // Convert pixel binary values to int
+        int newPixelRed = Integer.parseInt(newPixelRedBits,2);
+        int newPixelBlue = Integer.parseInt(newPixelBlueBits,2);
+        int newPixelGreen = Integer.parseInt(newPixelGreenBits,2);
+        // Combine separate channels into a pixel
+        return ((ogAlpha << 24) | (newPixelRed << 16) | (newPixelGreen << 8) | (newPixelBlue));
+    }
+
+    public static String blackOrWhiteMerge(String ogPixelBits, String qrPixelBits) {
         StringBuilder sb = new StringBuilder();
-        sb.append(ogRedBits);
+        sb.append(ogPixelBits);
         // Leading zeros aren't always included, this loop will correct that
         while (sb.length() <= 8) {
             sb.insert(0, '0');
         }
-        ogRedBits = sb.toString();
+        ogPixelBits = sb.toString();
         sb.setLength(0);
-        // Append a 1 or 0 to the new pixel, depending on the qr code pixel value
-        if (decide.equals("black")) {
-            sb.append(ogRedBits.substring(0,8));
+        if (qrPixelBits.equals("11111111")) {
+            sb.append(ogPixelBits.substring(0,8));
             sb.append(1);
-        } else if (decide.equals("white")) {
-            sb.append(ogRedBits.substring(0,8));
+        } else if (qrPixelBits.equals("0")) {
+            sb.append(ogPixelBits.substring(0,8));
             sb.append(0);
         } else {
             System.err.println("Corrupted QR data detected.");
         }
-        newRedPixBits = sb.toString();
-        int newRedPix = Integer.parseInt(newRedPixBits,2);
-        int newPix = (ogAlpha << 24) | (newRedPix << 16) | (ogGreen << 8) | (ogBlue);
-        System.out.println(ogPixel);
-        System.out.println(newPix);
-        return newPix;
-    }
-
-    public static String blackOrWhite(String pixel) {
-        if (pixel.equals("11111111")) {
-            return "black";
-        } else if (pixel.equals("0")) {
-            return "white";
-        } else {
-            return "error";
-        }
+        return sb.toString();
     }
 
     /***
