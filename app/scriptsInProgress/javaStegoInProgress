@@ -9,6 +9,7 @@ class Stego {
         BufferedImage ogImg = null;
         BufferedImage qrCode = null;
         BufferedImage stegoImg = null;
+        BufferedImage qrImg = null;
         // Try to read image from file path given
         try {
             ogImg = ImageIO.read(new File(args[0]));
@@ -19,13 +20,18 @@ class Stego {
             System.err.println("Error opening image.");
         }
         // Conversion Process
-        // Only converts image to array and back again
-        // TODO: Write encode and decode
         try {
+            // Encode test
             stegoImg = encode(ogImg, qrCode);
             boolean success = ImageIO.write(stegoImg, "png", new File("stegoImg.png"));
             if (!success) {
-                System.err.println("Error writing image to device");
+                System.err.println("Error writing encoded image to device");
+            }
+            // Decode test
+            qrImg = decode(stegoImg, qrCode);
+            success = ImageIO.write(qrImg, "png", new File("qrDecode.png"));
+            if (!success) {
+                System.err.println("Error writing decoded image to device");
             }
             // Decode
         } catch (Exception e) {
@@ -45,7 +51,7 @@ class Stego {
             ogChewer.grabPixels();
             qrChewer.grabPixels();
         } catch (Exception e) {
-            System.err.println("Error in imageToIntArray.");
+            System.err.println("Error grabbing pixels during encoding.");
         }
         // Using pixel data and image dimensions, write the qr code information into the red channel of image
         for (int j = 0; j < ogImg.getHeight(); j++) {
@@ -84,6 +90,42 @@ class Stego {
         int newPixelGreen = Integer.parseInt(newPixelGreenBits,2);
         // Combine separate channels into a pixel
         return ((ogAlpha << 24) | (newPixelRed << 16) | (newPixelGreen << 8) | (newPixelBlue));
+    }
+
+    public static BufferedImage decode(BufferedImage stegoImg, BufferedImage dummy) {
+        // Using qrCode image to get width and height at the moment
+        // Ideally, used fixed size with qr code generator, then hardcode those values in loops
+        int[] stegoPixels = new int[stegoImg.getWidth() * stegoImg.getHeight()];
+        PixelGrabber stegoChewer = new PixelGrabber(stegoImg, 0, 0, stegoImg.getWidth(), stegoImg.getHeight(), stegoPixels, 0, stegoImg.getWidth());
+        int[] qrPixels = new int[dummy.getWidth() * dummy.getHeight()];
+        BufferedImage qrCode = null;
+        try {
+            stegoChewer.grabPixels();
+        } catch (Exception e) {
+            System.err.println("Error grabbing pixels during decoding.");
+        }
+        // Using pixel data and image dimensions, write the qr code information into the red channel of image
+        for (int j = 0; j < stegoImg.getHeight(); j++) {
+            for (int i = 0; i < stegoImg.getWidth() && ((j * stegoImg.getWidth() + i) < qrPixels.length); i++) {
+                qrPixels[j * stegoImg.getWidth() + i] = decodeSinglePixel(stegoPixels[j * stegoImg.getWidth() + i]);
+            }
+        }
+        qrCode = arrayToImage(qrPixels, dummy.getWidth(), dummy.getHeight());
+        return qrCode;
+    }
+
+    public static int decodeSinglePixel(int stegoPixel) {
+        // Will return white pixel by default
+        int qrPixel = 0;
+        // Each pixel contains the information, so we only need to check one
+        int stegoRed   = (stegoPixel >> 16) & 0xff;
+        // Convert pixel int value to binary
+        String stegoRedBits = Integer.toBinaryString(stegoRed);
+        // Check for black or white
+        if (stegoRedBits.charAt(stegoRedBits.length()-1) == '1') {
+            qrPixel = 255;
+        }
+        return ((255 << 24) | (qrPixel << 16) | (qrPixel << 8) | (qrPixel));
     }
 
     public static String blackOrWhiteMerge(String ogPixelBits, String qrPixelBits) {
