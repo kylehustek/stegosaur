@@ -1,5 +1,6 @@
 package com.example.stegosaur
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
@@ -9,8 +10,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.inputmethod.InputMethod
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
@@ -23,6 +27,7 @@ class QRGen : AppCompatActivity() {
     private var editText: EditText? = null
     private var button: Button? = null
 
+    @SuppressLint("ServiceCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_q_r_gen)
@@ -43,6 +48,13 @@ class QRGen : AppCompatActivity() {
 
             val bitmap: Bitmap = generateQRCode((this.editText as EditText).text.toString())
             imageToStorage(this, bitmap)
+            val currentView = this.currentFocus
+            if(currentView != null){
+                val inMethod = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inMethod?.hideSoftInputFromWindow(currentView.windowToken, 0)
+            }
+            val qrRes: ImageView = findViewById<ImageView>(R.id.qr_res)
+            qrRes.setImageBitmap(bitmap)
             Toast.makeText(this, "QR Code saved to Pictures/Stegosaur", Toast.LENGTH_LONG).show()
         }
 

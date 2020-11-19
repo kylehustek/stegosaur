@@ -1,46 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?attr/colorPrimary"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
     android:layout_gravity="center_vertical"
-    tools:context=".MainActivity" >
 
-    <TextView
-        android:id="@+id/result_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:background="@color/beige_primary"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         android:layout_gravity="center_horizontal"
-        android:textSize="30sp"
-        android:text="@string/welcome" />
+        android:orientation="vertical"
+        android:layout_marginBottom="100dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-light"
+            android:text="Welcome to Stegosaur!"
+            android:textColor="@color/white"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/stego_logo"
+            />
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/to_hide_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:layout_gravity="center_horizontal"
-        android:text="@string/see_gallery" />
+        android:layout_margin="7dp"
+        android:clickable="true"
+        android:text="@string/encode_image" />
 
     <Button
         android:id="@+id/qr_gen"
+        android:layout_margin="7dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:layout_gravity="center_horizontal"
+        android:clickable="true"
         android:text="@string/generate_a_qr" />
 
     <Button
-        android:id="@+id/save_file"
+        android:id="@+id/begin_decode"
+        android:layout_margin="7dp"
+        android:paddingTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:layout_gravity="center_horizontal"
-        android:text="@string/save_label" />
+        android:clickable="true"
+        android:text="@string/decode_image" />
 
 
 </LinearLayout>

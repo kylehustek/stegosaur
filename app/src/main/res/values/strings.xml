@@ -9,5 +9,7 @@
     <string name="generate_a_qr">Generate a QR</string>
     <string name="text_to_hide_here">Text to hide here</string>
     <string name="generate_qr">Generate QR</string>
+    <string name="decode_image">Decode Image</string>
+    <string name="encode_image">Encode Image</string>
 
 </resources>
