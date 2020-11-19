@@ -1,6 +1,4 @@
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.MemoryImageSource;
 import java.awt.image.PixelGrabber;
 import java.io.*;
 import javax.imageio.ImageIO;
@@ -24,9 +22,14 @@ class Stego {
         // Only converts image to array and back again
         // TODO: Write encode and decode
         try {
-            encode(ogImg, qrCode);
+            stegoImg = encode(ogImg, qrCode);
+            boolean success = ImageIO.write(stegoImg, "png", new File("stegoImg.png"));
+            if (!success) {
+                System.err.println("Error writing image to device");
+            }
             // Decode
         } catch (Exception e) {
+            System.err.println(e);
             System.err.println("Error merging images.");
         }
     }
@@ -47,14 +50,14 @@ class Stego {
         // Using pixel data and image dimensions, write the qr code information into the red channel of image
         for (int j = 0; j < ogImg.getHeight(); j++) {
             for (int i = 0; i < ogImg.getWidth(); i++) {
-                if ((j < qrCode.getHeight()) && (i < qrCode.getWidth())) {
-                    stegoPixels[i * j] = encodeSinglePixel(ogPixels[i * j], qrPixels[i * j]);
+                if ((j * ogImg.getWidth() + i) < qrPixels.length) {
+                    stegoPixels[j * ogImg.getWidth() + i] = encodeSinglePixel(ogPixels[j * ogImg.getWidth() + i], qrPixels[j * ogImg.getWidth() + i]);
                 } else {
-                    stegoPixels[i * j] = ogPixels[i * j];
+                    stegoPixels[j * ogImg.getWidth() + i] = ogPixels[j * ogImg.getWidth() + i];
                 }
             }
         }
-        arrayToImage(stegoPixels, ogImg.getWidth(), ogImg.getHeight());
+        stegoImg = arrayToImage(stegoPixels, ogImg.getWidth(), ogImg.getHeight());
         return stegoImg;
     }
 
@@ -104,23 +107,9 @@ class Stego {
         return sb.toString();
     }
 
-    /***
-     * Convert array of pixels into a BufferedImage
-     *
-     * @param ogPixels
-     * @param width
-     * @param height
-     */
-    public static void arrayToImage(int[] ogPixels, int width, int height) {
-
-        MemoryImageSource imgSrc = new MemoryImageSource(width, height, ogPixels, 0, width);
-        Image imgRaw = Toolkit.getDefaultToolkit().createImage(imgSrc);
-        BufferedImage newImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        newImg.getGraphics().drawImage(imgRaw, 0, 0, null);
-        try {
-            ImageIO.write(newImg, "jpg", new File("stegoImg.jpg"));
-        } catch (IOException e) {
-            System.err.println("Error in arrayToImage.");
-        }
+    public static BufferedImage arrayToImage(int[] stegoPixels, int width, int height) {
+        BufferedImage stegoImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
+        stegoImg.setRGB(0, 0, width, height, stegoPixels, 0, width);
+        return stegoImg;
     }
 }
