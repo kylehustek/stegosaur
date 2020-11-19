@@ -9,14 +9,13 @@ class Stego {
     public static void main(String[] args) {
         // Initialize variables
         BufferedImage ogImg = null;
-        // DUMMY
         BufferedImage qrCode = null;
         BufferedImage stegoImg = null;
         // Try to read image from file path given
         try {
             ogImg = ImageIO.read(new File(args[0]));
             // TODO: Generate a qr code
-            // DUMMY
+            // DUMMY QR CODE, NEED TO HOOK IT UP
             qrCode = ImageIO.read(new File(args[1]));
         } catch (IOException e) {
             System.err.println("Error opening image.");
@@ -25,7 +24,7 @@ class Stego {
         // Only converts image to array and back again
         // TODO: Write encode and decode
         try {
-            stegoImg = encode(ogImg, qrCode);
+            encode(ogImg, qrCode);
             // Decode
         } catch (Exception e) {
             System.err.println("Error merging images.");
@@ -55,36 +54,57 @@ class Stego {
                 }
             }
         }
+        arrayToImage(stegoPixels, ogImg.getWidth(), ogImg.getHeight());
         return stegoImg;
     }
 
     public static int encodeSinglePixel(int x, int y, int ogPixel, int qrPixel) {
-        int pixel = 0;
-        //int alpha = (pixel >> 24) & 0xff;
-
-
-
-
-        // Pretty sure this converts the color channel to byte code
-        // Pull the pixel from the qr code
-        // Check if it's black or white
-        // Increment if it is, decrement if it isn't?
-        // ???
-        // Profit
+        String newRedPixBits = null;
+        // Convert the integer value to bits
+        int ogAlpha = (ogPixel >> 24) & 0xff;
         int ogRed   = (ogPixel >> 16) & 0xff;
-        int qrRed = (ogPixel >> 16) & 0xff;
+        int ogGreen = (ogPixel >> 8) & 0xff;
+        int ogBlue = (ogPixel >> 0) & 0xff;
+        int qrRed = (qrPixel >> 16) & 0xff;
+        String ogRedBits = Integer.toBinaryString(ogRed);
+        String qrRedBits = Integer.toBinaryString(qrRed);
+        // Check if the qr pixel is black or white, otherwise throw error
+        // If black, add 1, if white, add 0
+        String decide = blackOrWhite(qrRedBits);
+        StringBuilder sb = new StringBuilder();
+        sb.append(ogRedBits);
+        // Leading zeros aren't always included, this loop will correct that
+        while (sb.length() <= 8) {
+            sb.insert(0, '0');
+        }
+        ogRedBits = sb.toString();
+        sb.setLength(0);
+        // Append a 1 or 0 to the new pixel, depending on the qr code pixel value
+        if (decide.equals("black")) {
+            sb.append(ogRedBits.substring(0,8));
+            sb.append(1);
+        } else if (decide.equals("white")) {
+            sb.append(ogRedBits.substring(0,8));
+            sb.append(0);
+        } else {
+            System.err.println("Corrupted QR data detected.");
+        }
+        newRedPixBits = sb.toString();
+        int newRedPix = Integer.parseInt(newRedPixBits,2);
+        int newPix = (ogAlpha << 24) | (newRedPix << 16) | (ogGreen << 8) | (ogBlue);
+        System.out.println(ogPixel);
+        System.out.println(newPix);
+        return newPix;
+    }
 
-
-
-        System.out.println(ogRed);
-        System.out.println(qrRed);
-
-
-
-        //int green = (pixel >>  8) & 0xff;
-        //int blue  = (pixel      ) & 0xff;
-        // Deal with the pixel as necessary...
-        return pixel;
+    public static String blackOrWhite(String pixel) {
+        if (pixel.equals("11111111")) {
+            return "black";
+        } else if (pixel.equals("0")) {
+            return "white";
+        } else {
+            return "error";
+        }
     }
 
     /***
@@ -106,57 +126,4 @@ class Stego {
             System.err.println("Error in arrayToImage.");
         }
     }
-
-    // public static byte[] intArrayToByteArray(int[] intArray) {
-    //     byte[] byteArray = new byte[intArray.length * 3];
-    //     for (int i = 0; i < intArray.length; i++) {
-    //         byteArray[i * 3] = (byte) ((intArray[i] >> 16) & 0xFF);
-    //         byteArray[(i * 3) + 1] = (byte) ((intArray[i] >> 8) & 0xFF);
-    //         byteArray[(i * 3) + 2] = (byte) ((intArray[i]) & 0xFF);
-    //     }
-    //     return byteArray;
-    // }
 }
-
-
-
-
-// class Stego {
-
-//     public static void main(String[] args) {
-//         try {
-//             BufferedImage ogImg = ImageIO.read(new File(args[0]));
-//         } catch (IOException e) {
-//             System.out.println(e);
-//             System.out.println("Error in opening image in main");
-//         }
-//     }
-
-//     public static byte[] imageToByteArray(BufferedImage img) {
-//         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//         try {
-//             ImageIO.write(img, "jpg", baos);
-//             byte[] ogImgPix = baos.toByteArray();
-//             baos.close();
-//             return ogImgPix;
-//         } catch (IOException e) {
-//             System.out.println(e);
-//             System.out.println("Error in imageToByteArray");
-//         }
-//         return new byte[0];
-//     }
-
-//     public static BufferedImage byteArrayToImage(byte[] img) {
-//         try {
-//             ByteArrayInputStream bais = new ByteArrayInputStream(img);
-//             BufferedImage newImg = ImageIO.read(bais);
-//             ImageIO.write(newImg, "jpg", new File("new_" +  ".jpg"));
-//             bais.close();
-//             return newImg;
-//         } catch (IOException e) {
-//             System.out.println(e);
-//             System.out.println("Exception writing byte array to BufferedImage in byteArrayToImage");
-//         }
-//         return null;
-//     }
-// }
