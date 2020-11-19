@@ -22,6 +22,8 @@
         android:id="@+id/qr_create_button"
         android:layout_gravity="center_horizontal"
         android:text="@string/generate_qr"
+        android:textSize="30sp"
+        android:textStyle="bold"
         />
 
     <ImageView
