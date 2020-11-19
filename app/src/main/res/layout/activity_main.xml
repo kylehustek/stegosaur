@@ -25,11 +25,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="120dp"
             android:fontFamily="sans-serif-light"
             android:text="Welcome to Stegosaur!"
             android:textColor="@color/white"
-            android:textSize="36sp"
+            android:textSize="65sp"
             android:textStyle="bold" />
 
 
@@ -44,33 +44,34 @@
 
     <Button
         android:id="@+id/to_hide_image"
-        android:layout_width="wrap_content"
+        android:layout_width="500sp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="7dp"
+        android:textSize="40sp"
+        android:layout_margin="50dp"
         android:clickable="true"
         android:text="@string/encode_image" />
 
     <Button
         android:id="@+id/qr_gen"
-        android:layout_margin="7dp"
-        android:layout_width="wrap_content"
+        android:layout_margin="50dp"
+        android:layout_width="500sp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:textSize="40sp"
         android:clickable="true"
         android:text="@string/generate_a_qr" />
 
     <Button
         android:id="@+id/begin_decode"
-        android:layout_margin="7dp"
+        android:layout_margin="50dp"
         android:paddingTop="10dp"
-        android:layout_width="wrap_content"
+        android:layout_width="500sp"
         android:layout_height="wrap_content"
+        android:textSize="40sp"
         android:layout_gravity="center_horizontal"
         android:clickable="true"
         android:text="@string/decode_image" />
 
 
 </LinearLayout>
-
-
