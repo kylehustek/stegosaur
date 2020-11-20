@@ -12,15 +12,11 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.inputmethod.InputMethod
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.MultiFormatWriter
-import com.google.zxing.WriterException
-
-
+import android.widget.*
+import com.google.zxing.*
+import com.google.zxing.common.HybridBinarizer
+import com.google.zxing.qrcode.QRCodeReader
+import org.w3c.dom.Text
 
 
 class QRGen : AppCompatActivity() {
@@ -46,8 +42,8 @@ class QRGen : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val bitmap: Bitmap = generateQRCode((this.editText as EditText).text.toString())
-            imageToStorage(this, bitmap)
+            val bitmap = generateQRCode((this.editText as EditText).text.toString())
+            imageToStorage(this, bitmap as Bitmap)
             val currentView = this.currentFocus
             if(currentView != null){
                 val inMethod = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -56,6 +52,11 @@ class QRGen : AppCompatActivity() {
             val qrRes: ImageView = findViewById<ImageView>(R.id.qr_res)
             qrRes.setImageBitmap(bitmap)
             Toast.makeText(this, "QR Code saved to Pictures/Stegosaur", Toast.LENGTH_LONG).show()
+
+            val qrString = decodeQR(bitmap)
+            val qrOut = findViewById<TextView>(R.id.qr_content)
+            qrOut.setText(qrString)
+
         }
 
     }
@@ -63,6 +64,18 @@ class QRGen : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    fun decodeQR(bitmap: Bitmap): String{
+        val qrWidth = bitmap.width
+        val qrHeight = bitmap.height
+        val pix = IntArray(qrHeight * qrWidth)
+        bitmap.getPixels(pix, 0, qrWidth, 0, 0, qrWidth, qrHeight)
+        val rgbLuminanceSource = RGBLuminanceSource(qrWidth, qrHeight, pix)
+        val binaryBitmap: BinaryBitmap = BinaryBitmap(HybridBinarizer(rgbLuminanceSource))
+        val reader: QRCodeReader = QRCodeReader()
+        val result = reader.decode(binaryBitmap)
+        return result.text
     }
 
     //Method taken and modified from 3rd party zxing library documentation
