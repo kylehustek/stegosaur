@@ -11,5 +11,6 @@
     <string name="generate_qr">Generate QR</string>
     <string name="decode_image">Decode Image</string>
     <string name="encode_image">Encode Image</string>
+    <string name="welcome_to_stegosaur">Welcome to Stegosaur!</string>
 
 </resources>

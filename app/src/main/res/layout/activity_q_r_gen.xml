@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="10dp"
+    android:padding="@dimen/_20sdp"
     tools:context=".QRGen">
 
     <EditText
@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/text_to_hide_here"
+        android:paddingBottom="@dimen/_15sdp"
         />
 
     <Button
@@ -22,8 +23,9 @@
         android:id="@+id/qr_create_button"
         android:layout_gravity="center_horizontal"
         android:text="@string/generate_qr"
-        android:textSize="30sp"
+        android:textSize="@dimen/_20sdp"
         android:textStyle="bold"
+
         />
 
     <ImageView
