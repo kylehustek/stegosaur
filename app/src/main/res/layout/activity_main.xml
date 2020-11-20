@@ -16,20 +16,20 @@
     <LinearLayout
         android:background="@color/beige_primary"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="@dimen/_250sdp"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical"
-        android:layout_marginBottom="100dp">
+        android:layout_marginBottom="@dimen/_45sdp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="sans-serif-light"
-            android:text="Welcome to Stegosaur!"
+            android:text="@string/welcome_to_stegosaur"
             android:textColor="@color/white"
-            android:textSize="65sp"
+            android:textSize="@dimen/_28sdp"
             android:textStyle="bold" />
 
 
@@ -37,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/stego_logo"
+
             />
 
     </LinearLayout>
@@ -44,33 +45,32 @@
 
     <Button
         android:id="@+id/to_hide_image"
-        android:layout_width="500sp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textSize="40sp"
-        android:layout_margin="50dp"
+        android:layout_margin="@dimen/_9sdp"
+        android:textSize="@dimen/_30sdp"
         android:clickable="true"
         android:text="@string/encode_image" />
 
     <Button
         android:id="@+id/qr_gen"
-        android:layout_margin="50dp"
-        android:layout_width="500sp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textSize="40sp"
+        android:layout_margin="@dimen/_9sdp"
         android:clickable="true"
-        android:text="@string/generate_a_qr" />
+        android:text="@string/generate_a_qr"
+        android:textSize="@dimen/_30sdp" />
 
     <Button
         android:id="@+id/begin_decode"
-        android:layout_margin="50dp"
-        android:paddingTop="10dp"
-        android:layout_width="500sp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="40sp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/_9sdp"
         android:clickable="true"
+        android:textSize="@dimen/_30sdp"
         android:text="@string/decode_image" />
 
 
