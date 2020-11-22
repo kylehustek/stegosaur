@@ -12,5 +12,6 @@
     <string name="decode_image">Decode Image</string>
     <string name="encode_image">Encode Image</string>
     <string name="welcome_to_stegosaur">Welcome to Stegosaur!</string>
+    <string name="warning">Once you press the begin button, you will be able to select multiple photos from the device. First, select the image, and secondly the QR code. If they are not selected in this fashion, or if more are selected, the app will crash. Use at your own risk.</string>
 
 </resources>
