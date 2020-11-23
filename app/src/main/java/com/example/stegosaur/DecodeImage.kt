@@ -22,12 +22,12 @@ class DecodeImage : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.decode_image)
 
         val actionBar = supportActionBar
         actionBar!!.title = "Decode Image"
-        actionBar.setDisplayHomeAsUpEnabled(true)
+        actionBar.setDisplayHomeAsUpEnabled (true)
+
 
         val button: Button = findViewById<Button>(R.id.decode_image_button)
         button.setOnClickListener{
