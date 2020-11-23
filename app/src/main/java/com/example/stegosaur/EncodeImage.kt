@@ -46,15 +46,21 @@ class EncodeImage : AppCompatActivity() {
             val input2: InputStream? = qr?.let { contentResolver.openInputStream(it) }
             val bitmap2: Bitmap = BitmapFactory.decodeStream(input2)
 
-            val finalBitmap = Steganography.encode(bitmap1, bitmap2)
-
             val imageView1 = findViewById<ImageView>(R.id.selected_image1)
-//            val imageView2 = findViewById<ImageView>(R.id.selected_image2)
-//            imageView1.setImageBitmap(bitmap1)
-//            imageView2.setImageBitmap(bitmap2)
-
+            val imageView2 = findViewById<ImageView>(R.id.selected_image2)
+            val imageView3 = findViewById<ImageView>(R.id.fin)
             imageView1.setImageBitmap(bitmap1)
-            imageToStorage(this, finalBitmap)
+            imageView2.setImageBitmap(bitmap2)
+
+
+            val button2: Button = findViewById(R.id.encode)
+            button2.setOnClickListener {
+                val finalBitmap = Steganography.encode(bitmap1, bitmap2)
+                imageView3.setImageBitmap(finalBitmap)
+                imageToStorage(this, finalBitmap)
+                Toast.makeText(this, "Image saved!", Toast.LENGTH_SHORT).show()
+            }
+
 
 
         }

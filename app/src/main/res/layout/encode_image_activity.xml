@@ -1,59 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?attr/colorPrimary"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/selected"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:stretchColumns="*"
-    android:layout_marginTop="@dimen/_50sdp"
-    tools:context=".EncodeImage" >
+    android:paddingTop="@dimen/_15sdp"
+    android:background="?attr/colorPrimary"
+    tools:context=".EncodeImage">
 
 
-
-    <TableRow>
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/warning"
-        android:textSize="@dimen/_14sdp"
         android:shadowColor="@color/white"
-        />
-    </TableRow>
-    <TableRow>
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="@dimen/_5sdp"
+        android:paddingRight="@dimen/_5sdp"
+        android:text="@string/warning"
+        android:textSize="@dimen/_14sdp" />
+
     <Button
+        android:id="@+id/begin"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_below="@id/textView"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Begin"
-        android:textSize="@dimen/_30sdp"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/begin"
+        android:text="@string/select_images"
+        android:textSize="@dimen/_30sdp" />
+
+    <ImageView
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:id="@+id/selected_image1"
+        android:layout_below="@id/begin"
+        android:layout_alignParentLeft="true"
+
+        />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_below="@id/selected_image1"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/_35sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="@color/white"
+        android:text="Image"
+        android:textSize="@dimen/_20sdp" />
+
+    <ImageView
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:id="@+id/selected_image2"
+        android:layout_below="@id/begin"
+        android:layout_alignParentRight="true"
+        />
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_below="@id/selected_image2"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/_40sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="@color/white"
+        android:text="QR"
+        android:textSize="@dimen/_20sdp" />
+
+    <Button
+        android:id="@+id/encode"
+        android:layout_marginTop="@dimen/_35sdp"
+        android:layout_below="@id/selected_image1"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/begin_encode"
+        android:textSize="@dimen/_30sdp" />
+
+    <ImageView
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_width="@dimen/_130sdp"
+        android:layout_height="@dimen/_130sdp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/fin"
+        android:layout_below="@id/encode"
         />
 
 
-    </TableRow>
 
-    <TableRow android:padding="@dimen/_5sdp">
-
-        <ImageView
-            android:id="@+id/selected_image1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <ImageView
-            android:id="@+id/selected_image2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-
-    </TableRow>
-
-
-
-
-
-
-
-
-
-</TableLayout>
+</RelativeLayout>
