@@ -75,6 +75,7 @@ public class Steganography {
         // Check if the qr pixel is black or white, otherwise throw error
         // Append a 1 or 0 to the new pixel, depending on the qr code pixel value
         String newPixelRedBits = blackOrWhiteMerge(ogRedBits, qrRedBits);
+//        System.err.println(newPixelRedBits);
         String newPixelBlueBits = blackOrWhiteMerge(ogBlueBits, qrRedBits);
         String newPixelGreenBits = blackOrWhiteMerge(ogGreenBits, qrRedBits);
         // Convert pixel binary values to int

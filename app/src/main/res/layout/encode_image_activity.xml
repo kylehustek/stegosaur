@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<TableLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/colorPrimary"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_gravity="center_vertical"
+    android:layout_height="match_parent"
+    android:stretchColumns="*"
+    android:layout_marginTop="@dimen/_50sdp"
     tools:context=".EncodeImage" >
 
+
+
+    <TableRow>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,7 +19,8 @@
         android:textSize="@dimen/_14sdp"
         android:shadowColor="@color/white"
         />
-
+    </TableRow>
+    <TableRow>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,16 +31,24 @@
         />
 
 
-"
+    </TableRow>
+
+    <TableRow android:padding="@dimen/_5sdp">
+
+        <ImageView
+            android:id="@+id/selected_image1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/selected_image2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+    </TableRow>
 
 
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/selected_image"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:layout_gravity="center"
-    android:padding="@dimen/_10sdp"
-    />
 
 
 
@@ -44,5 +56,4 @@
 
 
 
-
-</LinearLayout>
+</TableLayout>

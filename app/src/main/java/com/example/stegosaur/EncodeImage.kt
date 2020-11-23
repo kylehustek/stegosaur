@@ -39,10 +39,10 @@ class EncodeImage : AppCompatActivity() {
 
         val button: Button = findViewById(R.id.begin)
         button.setOnClickListener{
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            val intent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
             intent.type = "image/*"
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            startActivityForResult(intent, 1)
+            startActivityForResult(Intent.createChooser(intent, "Add images"), 1);
         }
 
 
@@ -69,14 +69,18 @@ class EncodeImage : AppCompatActivity() {
             val input1: InputStream? = img?.let { contentResolver.openInputStream(it) }
             val bitmap1: Bitmap = BitmapFactory.decodeStream(input1)
 
-            val input2: InputStream? = img?.let { contentResolver.openInputStream(it) }
+            val input2: InputStream? = qr?.let { contentResolver.openInputStream(it) }
             val bitmap2: Bitmap = BitmapFactory.decodeStream(input2)
 
-            val finalBitmap = Steganography.encode(bitmap2, bitmap1)
+            val finalBitmap = Steganography.encode(bitmap1, bitmap2)
 
-            val imageView = findViewById<ImageView>(R.id.selected_image)
-            imageView.setImageBitmap(finalBitmap)
+            val imageView1 = findViewById<ImageView>(R.id.selected_image1)
+//            val imageView2 = findViewById<ImageView>(R.id.selected_image2)
+//            imageView1.setImageBitmap(bitmap1)
+//            imageView2.setImageBitmap(bitmap2)
 
+            imageView1.setImageBitmap(bitmap1)
+            imageToStorage(this, finalBitmap)
 
 
         }

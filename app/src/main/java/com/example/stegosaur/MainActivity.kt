@@ -44,17 +44,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         val beginDecode: Button = findViewById(R.id.begin_decode)
-        beginDecode.setOnClickListener{decodeImage() }
+        beginDecode.setOnClickListener {
+            val intent = Intent(this, DecodeImage::class.java)
+            startActivity(intent)
+        }
+    }
 
     }
 
 
-    private fun decodeImage() {
-        Toast.makeText(this, "Implement Decode", Toast.LENGTH_SHORT).show()
-    }
 
 
-}
 
 
 
