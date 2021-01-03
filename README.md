@@ -11,5 +11,6 @@ This project is no longer being updated.
 Contributors:
 
 Kyle Hustek - All Kotlin code and XML for Android app function
+
 Nick Harvey - The Encode and Decode Java scripts
 
